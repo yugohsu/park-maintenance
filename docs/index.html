@@ -46,7 +46,7 @@
     display: inline-flex; align-items: center; justify-content: center; font-size: 22px; line-height: 1; color: var(--navy); }
   .park-btn.on .chk { border-color: var(--yellow); background: var(--yellow); }
   .park-btn.on .chk::after { content: "\2713"; font-weight: 900; }
-  .card.yellow { border-color: var(--yellow-dark); background: #FFF6D6; }
+  .card.yellow { border-color: var(--yellow); background: var(--navy); } .card.yellow label span { color: #fff; } .card.yellow input[type=date] { border-color: var(--yellow); } .card.yellow .park-btn { background: var(--blue); color: #fff; border-color: var(--blue); } .card.yellow .park-btn .chk { border-color: #fff; background: transparent; color: var(--navy); } .card.yellow .park-btn.on { background: var(--yellow); color: var(--navy); border-color: var(--yellow); } .card.yellow .park-btn.on .chk { background: var(--navy); border-color: var(--navy); color: var(--yellow); }
   .card.yellow > h2 { background: var(--yellow); color: var(--navy); }
   .go { display: block; width: 100%; font: inherit; font-size: 28px; padding: 18px;
     border: 0; border-radius: 16px; background: var(--yellow); color: var(--navy);
@@ -109,7 +109,7 @@
 
   <div id="tab-check">
   <section class="card yellow">
-    <h2>1. 入團日期</h2>
+    <h2>入園日期</h2>
     <div class="body">
       <div class="row">
         <label><span>開始</span><input type="date" id="start"></label>
@@ -119,7 +119,7 @@
   </section>
 
   <section class="card yellow">
-    <h2>2. 選樂園（可多選）</h2>
+    <h2>選樂園（可多選）</h2>
     <div class="body"><div class="parks" id="parks"></div></div>
   </section>
 
@@ -136,14 +136,14 @@
 
   <div id="tab-remind" class="hidden">
     <section class="card">
-      <h2>1. 要買什麼</h2>
+      <h2>要買什麼</h2>
       <div class="body parks">
         <button class="item2 on" data-item="usj">USJ 快通<small>入園前 2 個月開賣</small></button>
         <button class="item2" data-item="suzuka">賽道挑戰者<small>入園前 42 天開賣</small></button>
       </div>
     </section>
     <section class="card">
-      <h2>2. 哪天入園</h2>
+      <h2>哪天入園</h2>
       <div class="body">
         <label><span>入園日期</span><input type="date" id="rVisit"></label>
         <label><span>備註（例如團名，可不填）</span><input type="text" id="rNote" maxlength="40" placeholder="例如：2月親子團"></label>
