@@ -54,7 +54,7 @@
   .item:last-child { border-bottom: 0; }
   .date { display: inline-block; background: var(--yellow); color: var(--navy); border-radius: 8px;
     padding: 2px 10px; font-size: 17px; margin: 0 6px 6px 0; }
-  .none { padding: 14px; color: var(--blue); }
+  .orig { color: #5A6785; font-size: 16px; margin-top: 4px; } .none { padding: 14px; color: var(--blue); }
   .error { padding: 14px; color: var(--red); }
   .site { display: block; padding: 12px 14px; background: var(--sky); color: var(--blue);
     text-decoration: none; font-size: 17px; border-top: 2px solid var(--sky); }
@@ -196,8 +196,8 @@
           var labels = it.periods.map(label);
           html += '<div class="item">' + labels.map(function (l) {
             return '<span class="date">' + esc(l) + "</span>"; }).join("") +
-            "<div>" + esc(it.text) + "</div></div>";
-          txt.push("・" + labels.join("、") + " " + it.text);
+            "<div>" + esc(it.text_zh || it.text) + "</div>" + (it.text_zh ? '<div class="orig">原文：' + esc(it.text) + "</div>" : "") + "</div>";
+          txt.push("・" + labels.join("、") + " " + (it.text_zh || it.text));
         });
       }
       html += '<a class="site" href="' + esc(p.url) + '" target="_blank" rel="noopener">開啟官網確認</a></section>';
