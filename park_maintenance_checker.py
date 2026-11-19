@@ -50,7 +50,7 @@ PARK_CONFIGS = [
         "id": "hirakata",
         "name": "枚方公園",
         "aliases": ["枚方", "Hirakata", "ひらかたパーク"],
-        "url": "https://www.hirakatapark.co.jp/schedules/",
+        "url": "https://www.hirakatapark.co.jp/situation/",
         "selectors": ["tr", "li", "dd", "p"],
     },
 ]
@@ -293,12 +293,12 @@ def clean_text(s: str) -> str:
 
 
 def dedupe_containers(items: list) -> list:
-    """網頁巢狀標籤會重複抓到同一段文字（外層包含內層），只保留最精簡的那一筆"""
+    """網頁巢狀標籤會重複抓到同一段文字（外層包含內層），保留外層（含設施名稱＋日期）"""
     texts = [it["text"] for it in items]
     keep = []
     for i, it in enumerate(items):
         t = it["text"]
-        if any(j != i and texts[j] != t and texts[j] in t for j in range(len(items))):
+        if any(j != i and texts[j] != t and t in texts[j] for j in range(len(items))):
             continue
         if any(k["text"] == t for k in keep):
             continue
