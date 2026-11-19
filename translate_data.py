@@ -84,6 +84,17 @@ STATUS_WORDS = {
 }
 
 
+MONTHS = {m: i for i, m in enumerate(
+    ["january", "february", "march", "april", "may", "june", "july",
+     "august", "september", "october", "november", "december"], 1)}
+WEEKDAYS = {"月": "週一", "火": "週二", "水": "週三", "木": "週四", "金": "週五", "土": "週六", "日": "週日", "祝": "假日"}
+
+
+def _en_date(m):
+    mo = MONTHS.get(m.group(1).lower())
+    return f"{m.group(3)}/{mo}/{m.group(2)}" if mo else m.group(0)
+
+
 def apply_names(text: str) -> str:
     out = text
     for table in (RIDE_NAMES, STATUS_WORDS):
@@ -91,7 +102,15 @@ def apply_names(text: str) -> str:
             if ja == "嵐" and out.strip() != "嵐":
                 continue  # 「嵐」只在單獨出現時才換，避免誤換
             out = out.replace(ja, table[ja])
+    # 英文日期 November 30, 2026 -> 2026/11/30
+    out = re.sub(r"\b([A-Za-z]+)\s+(\d{1,2}),\s*(\d{4})", _en_date, out)
+    # 日文星期 (火) -> (週二)
+    out = re.sub(r"[（(]([月火水木金土日祝])[）)]", lambda m: f"({WEEKDAYS[m.group(1)]})", out)
     return out
+
+
+# 還沒翻到的日文／英文片段（例如對照表沒有的設施名稱）
+LEFTOVER_RE = re.compile(r"[\u3040-\u30ffー・][\u3040-\u30ffー・A-Za-z0-9]*|[A-Za-z][A-Za-z'&!\-]*(?:\s+[A-Za-z][A-Za-z'&!\-]*)*")
 
 
 def needs_translation(text: str) -> bool:
@@ -147,19 +166,24 @@ def main():
         for it in park.get("items", []):
             text = it["text"]
             base = apply_names(text)
-            if not needs_translation(base):
-                if base != text:
-                    it["text_zh"] = base  # 對照表就翻完了，不用機器翻譯
-                continue
-            if base not in cache:
-                zh = translate(base)
-                if zh:
-                    cache[base] = zh
-                    new_count += 1
-                time.sleep(0.3)
-            if base in cache:
-                it["text_zh"] = cache[base]
-                used[base] = cache[base]
+            zh = base
+            # 只把剩下的日文／英文片段送去機器翻譯，其餘文字保持不動
+            for seg in sorted(set(m.group(0).strip() for m in LEFTOVER_RE.finditer(base)), key=len, reverse=True):
+                if not seg or not needs_translation(seg):
+                    continue
+                if any(seg in v for v in RIDE_NAMES.values()):
+                    continue  # 地圖中文名稱裡本來就有的英文（例如 Lloyd），不翻
+                if seg not in cache:
+                    t = translate(seg)
+                    if t:
+                        cache[seg] = t
+                        new_count += 1
+                    time.sleep(0.3)
+                if seg in cache:
+                    used[seg] = cache[seg]
+                    zh = zh.replace(seg, cache[seg])
+            if zh != text:
+                it["text_zh"] = zh
 
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=1)
