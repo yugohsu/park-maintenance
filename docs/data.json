@@ -1,0 +1,41 @@
+{
+ "generated_at": "尚未更新",
+ "window": [
+  "-",
+  "-"
+ ],
+ "parks": [
+  {
+   "id": "nagashima",
+   "name": "長島溫泉樂園",
+   "url": "https://www.nagashima-onsen.co.jp/spaland/attraction/status.html#attraction01",
+   "status": "error",
+   "error": "資料尚未產生，請到 Actions 按 Run workflow",
+   "items": []
+  },
+  {
+   "id": "legoland",
+   "name": "樂高樂園",
+   "url": "https://www.legoland.jp/zh-hant/operation/info/closed/",
+   "status": "error",
+   "error": "資料尚未產生，請到 Actions 按 Run workflow",
+   "items": []
+  },
+  {
+   "id": "suzuka",
+   "name": "鈴鹿賽道樂園",
+   "url": "https://www.suzukacircuit.jp/park/schedule/",
+   "status": "error",
+   "error": "資料尚未產生，請到 Actions 按 Run workflow",
+   "items": []
+  },
+  {
+   "id": "hirakata",
+   "name": "枚方公園",
+   "url": "https://www.hirakatapark.co.jp/schedules/",
+   "status": "error",
+   "error": "資料尚未產生，請到 Actions 按 Run workflow",
+   "items": []
+  }
+ ]
+}
