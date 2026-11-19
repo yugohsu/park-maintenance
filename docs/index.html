@@ -193,7 +193,7 @@
         txt.push("無維修設施");
       } else {
         hits.forEach(function (it) {
-          var labels = it.periods.map(label);
+          var labels = it.periods.filter(function (q) { return overlap(q, s, e); }).map(label);
           html += '<div class="item">' + labels.map(function (l) {
             return '<span class="date">' + esc(l) + "</span>"; }).join("") +
             "<div>" + esc(it.text_zh || it.text) + "</div>" + (it.text_zh ? '<div class="orig">原文：' + esc(it.text) + "</div>" : "") + "</div>";
