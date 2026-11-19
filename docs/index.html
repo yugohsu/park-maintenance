@@ -41,6 +41,13 @@
   .park-btn { font: inherit; font-size: 18px; padding: 14px 8px; border-radius: 12px;
     border: 3px solid var(--blue); background: #fff; color: var(--blue); }
   .park-btn.on { background: var(--navy); color: var(--yellow); border-color: var(--navy); }
+  .park-btn { display: flex; align-items: center; gap: 8px; text-align: left; padding: 14px 8px; white-space: nowrap; }
+  .chk { flex: none; width: 26px; height: 26px; border: 3px solid var(--blue); border-radius: 6px; background: #fff;
+    display: inline-flex; align-items: center; justify-content: center; font-size: 22px; line-height: 1; color: var(--navy); }
+  .park-btn.on .chk { border-color: var(--yellow); background: var(--yellow); }
+  .park-btn.on .chk::after { content: "\2713"; font-weight: 900; }
+  .card.yellow { border-color: var(--yellow-dark); background: #FFF6D6; }
+  .card.yellow > h2 { background: var(--yellow); color: var(--navy); }
   .go { display: block; width: 100%; font: inherit; font-size: 28px; padding: 18px;
     border: 0; border-radius: 16px; background: var(--yellow); color: var(--navy);
     box-shadow: 0 5px 0 var(--yellow-dark); margin: 6px 0 20px; }
@@ -101,23 +108,17 @@
   </div>
 
   <div id="tab-check">
-  <section class="card">
-    <h2>1. 選日期</h2>
+  <section class="card yellow">
+    <h2>1. 入團日期</h2>
     <div class="body">
       <div class="row">
         <label><span>開始</span><input type="date" id="start"></label>
         <label><span>結束</span><input type="date" id="end"></label>
       </div>
-      <div class="quick">
-        <button data-q="0">今天</button>
-        <button data-q="1">明天</button>
-        <button data-q="7">未來 7 天</button>
-        <button data-q="30">未來 30 天</button>
-      </div>
     </div>
   </section>
 
-  <section class="card">
+  <section class="card yellow">
     <h2>2. 選樂園（可多選）</h2>
     <div class="body"><div class="parks" id="parks"></div></div>
   </section>
@@ -208,7 +209,7 @@
       selected[p.id] = saved.length ? saved.indexOf(p.id) >= 0 : true;
       var b = document.createElement("button");
       b.className = "park-btn" + (selected[p.id] ? " on" : "");
-      b.textContent = p.name;
+      b.innerHTML = '<span class="chk"></span><span>' + esc(p.name) + "</span>";
       b.onclick = function () {
         selected[p.id] = !selected[p.id];
         b.classList.toggle("on", selected[p.id]);
@@ -286,9 +287,6 @@
   if (r.length === 2 && r[1] >= ymd(new Date())) { $("start").value = r[0]; $("end").value = r[1]; }
   else setRange(7);
 
-  Array.prototype.forEach.call(document.querySelectorAll(".quick button"), function (b) {
-    b.onclick = function () { setRange(+b.getAttribute("data-q")); };
-  });
   $("go").onclick = search;
   $("copy").onclick = copy;
 
